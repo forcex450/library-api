@@ -3,26 +3,21 @@ import { Document } from 'mongoose';
 import { IsEmail, Length } from 'class-validator';
 import { RoleTypes } from '@/core/enums/role.enum';
 
-export type UserDocument = User & Document;
+export type BookDocument = Book & Document;
 
 @Schema({
   versionKey: false,
   timestamps: { currentTime: () => Math.floor(Date.now() / 1000) },
 })
-export class User {
+export class Book {
   @Prop({ required: true })
-  username: string;
+  name: string;
 
   @Prop({ required: true })
-  @IsEmail()
-  email: string;
+  description: string;
 
   @Prop({ required: true })
-  @Length(5, 25)
-  password: string;
-
-  @Prop({ required: true })
-  role: RoleTypes;
+  author: string;
 
   @Prop()
   createdAt: number;
@@ -31,4 +26,4 @@ export class User {
   updatedAt: number;
 }
 
-export const UserSchema = SchemaFactory.createForClass(User);
+export const BookSchema = SchemaFactory.createForClass(Book);
