@@ -5,8 +5,5 @@ export class CreateBookDTO {
   name: string;
 
   @IsString()
-  description: string;
-
-  @IsString()
-  author: string;
+  shortDescription: string;
 }

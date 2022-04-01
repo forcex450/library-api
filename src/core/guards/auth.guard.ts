@@ -30,7 +30,7 @@ export class AuthGuard implements CanActivate {
     if (!userModel) return false;
 
     request.user = {
-      id: userModel._id,
+      id: userModel._id.toString(),
       username: userModel.username,
       email: userModel.email,
       role: userModel.role,

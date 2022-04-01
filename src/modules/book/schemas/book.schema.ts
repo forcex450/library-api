@@ -13,11 +13,17 @@ export class Book {
   @Prop({ required: true })
   name: string;
 
+  @Prop()
+  shortDescription: string;
+
   @Prop({ required: true })
   description: string;
 
+  @Prop({ type: 'array', required: true })
+  author: string[];
+
   @Prop({ required: true })
-  author: string;
+  createdByUserId: string;
 
   @Prop()
   createdAt: number;
