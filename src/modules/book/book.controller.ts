@@ -13,6 +13,7 @@ import {
   Delete,
   HttpCode,
   HttpStatus,
+  Query,
 } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { CreateBookDTO } from './dto/create-book.dto';
@@ -21,6 +22,7 @@ import { GetBookQuery } from './application/query/impl/get-book.query';
 import { GetBookDTO } from './dto/get-book.dto';
 import { DeleteBookCommand } from './application/commands/impl/delete-book.command';
 import { ApiTags } from '@nestjs/swagger';
+import { SearchBookQuery } from './application/query/impl/search-book.query';
 
 @Controller('book')
 @ApiTags('Book')
@@ -30,12 +32,16 @@ export class BookController {
     private queryBus: QueryBus,
   ) {}
 
-  @Get(':id')
+  @Get('/search')
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthGuard, RolesGuard)
   @Roles(RoleTypes.USER, RoleTypes.ADMIN)
-  async getBook(@Param() { id }: GetBookDTO) {
-    return await this.queryBus.execute(new GetBookQuery(id));
+  async searchBook(@Query() { name, id }: GetBookDTO) {
+    if (name) {
+      return await this.queryBus.execute(new SearchBookQuery(name));
+    } else if (id) {
+      return await this.queryBus.execute(new GetBookQuery(id));
+    }
   }
 
   @Post()
@@ -49,7 +55,7 @@ export class BookController {
   @Delete(':id')
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthGuard, RolesGuard)
-  @Roles(RoleTypes.USER, RoleTypes.ADMIN)
+  @Roles(RoleTypes.ADMIN)
   async deleteBook(@User() user, @Param() { id }: GetBookDTO) {
     return await this.commandBus.execute(new DeleteBookCommand(id, user.id));
   }

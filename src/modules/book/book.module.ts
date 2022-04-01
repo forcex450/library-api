@@ -10,6 +10,7 @@ import config from '@config';
 import { GetBookHandler } from './application/query/handlers/get-book.handler';
 import { DeleteBookHandler } from './application/commands/handlers/delete-book.handler';
 import { BorrowSchema } from '../borrow/schemas/borrow.schema';
+import { GetBooksHandler } from './application/query/handlers/search-book.query';
 
 @Module({
   imports: [
@@ -24,6 +25,11 @@ import { BorrowSchema } from '../borrow/schemas/borrow.schema';
     CqrsModule,
   ],
   controllers: [BookController],
-  providers: [CreateBookHandler, DeleteBookHandler, GetBookHandler],
+  providers: [
+    CreateBookHandler,
+    DeleteBookHandler,
+    GetBookHandler,
+    GetBooksHandler,
+  ],
 })
 export class BookModule {}
