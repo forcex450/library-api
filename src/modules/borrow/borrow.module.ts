@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
 import { JwtModule } from '@nestjs/jwt';
-import config from '@config';
-import { UserService } from './user.service';
-import { UserController } from './user.controller';
-import { UserSchema } from './schemas/user.schema';
+import { MongooseModule } from '@nestjs/mongoose';
 import { BookSchema } from '../book/schemas/book.schema';
-import { BorrowSchema } from '../borrow/schemas/borrow.schema';
+import { UserSchema } from '../user/schemas/user.schema';
+import { BorrowController } from './borrow.controller';
+import { BorrowService } from './borrow.service';
+import { BorrowSchema } from './schemas/borrow.schema';
+import config from '@config';
 
 @Module({
   imports: [
@@ -19,7 +19,7 @@ import { BorrowSchema } from '../borrow/schemas/borrow.schema';
       secret: config.secret,
     }),
   ],
-  providers: [UserService],
-  controllers: [UserController],
+  controllers: [BorrowController],
+  providers: [BorrowService],
 })
-export class UserModule {}
+export class BorrowModule {}

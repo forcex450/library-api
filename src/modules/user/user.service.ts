@@ -9,11 +9,15 @@ import { User, UserDocument } from './schemas/user.schema';
 import { JwtService } from '@nestjs/jwt';
 import { RoleTypes } from '@/core/enums/role.enum';
 import { LoginDTO } from './dto/login.dto';
+import { Book, BookDocument } from '../book/schemas/book.schema';
+import { Borrow, BorrowDocument } from '../borrow/schemas/borrow.schema';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectModel(User.name) private userModel: Model<UserDocument>,
+    @InjectModel(Book.name) private bookModel: Model<BookDocument>,
+    @InjectModel(Borrow.name) private borrowModel: Model<BorrowDocument>,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -30,6 +34,34 @@ export class UserService {
     return {
       message: 'get all users',
       data: newUsers,
+    };
+  }
+
+  async getMe(user) {
+    const books = await this.borrowModel.aggregate([
+      {
+        $match: {
+          userId: user.id,
+          checked: true,
+        },
+      },
+    ]);
+
+    return {
+      message: 'get me',
+      data: {
+        ...user,
+        borrowedBooks: books.map((book) => {
+          let d = new Date(book.createdAt);
+
+          return {
+            id: book.bookId,
+            name: book.bookName,
+            star: book.star,
+            purchaseDate: d.toLocaleDateString(),
+          };
+        }),
+      },
     };
   }
 

@@ -9,12 +9,14 @@ import { CreateBookHandler } from './application/commands/handlers/create-book.h
 import config from '@config';
 import { GetBookHandler } from './application/query/handlers/get-book.handler';
 import { DeleteBookHandler } from './application/commands/handlers/delete-book.handler';
+import { BorrowSchema } from '../borrow/schemas/borrow.schema';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: 'User', schema: UserSchema },
       { name: 'Book', schema: BookSchema },
+      { name: 'Borrow', schema: BorrowSchema },
     ]),
     JwtModule.register({
       secret: config.secret,

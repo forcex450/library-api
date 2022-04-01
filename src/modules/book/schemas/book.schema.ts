@@ -26,6 +26,9 @@ export class Book {
   createdByUserId: string;
 
   @Prop()
+  borrowedBy: string;
+
+  @Prop()
   createdAt: number;
 
   @Prop()

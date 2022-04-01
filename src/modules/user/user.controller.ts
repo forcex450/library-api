@@ -18,6 +18,7 @@ import { RolesGuard } from '@/core/guards/role.guard';
 import { Roles } from '@/core/decorators/role.decorator';
 import { RoleTypes } from '@/core/enums/role.enum';
 import { LoginDTO } from './dto/login.dto';
+import { User } from '@/core/decorators/user.decorator';
 
 @Controller('user')
 export class UserController {
@@ -28,6 +29,13 @@ export class UserController {
   @Roles(RoleTypes.USER, RoleTypes.ADMIN)
   getAllUsers() {
     return this.userService.getAll();
+  }
+
+  @Get('/@me')
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(RoleTypes.USER, RoleTypes.ADMIN)
+  getMe(@User() user) {
+    return this.userService.getMe(user);
   }
 
   @Post('/create')

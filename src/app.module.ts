@@ -7,6 +7,7 @@ import { UserModule } from './modules/user/user.module';
 import { validate } from '@core/config/validation';
 import config from '@config';
 import { BookModule } from '@modules/book/book.module';
+import { BorrowModule } from './modules/borrow/borrow.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { BookModule } from '@modules/book/book.module';
     MongooseModule.forRoot(config.database.uri),
     UserModule,
     BookModule,
+    BorrowModule,
   ],
   controllers: [AppController],
   providers: [AppService],
